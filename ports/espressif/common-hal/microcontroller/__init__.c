@@ -36,6 +36,8 @@
 #elif defined(CONFIG_IDF_TARGET_ESP32C6)
 #include "soc/lp_aon_reg.h"
 #include "esp32c6/rom/rtc.h"
+#elif defined(CONFIG_IDF_TARGET_ESP32P4)
+#include "esp32p4/rom/rtc.h"
 #elif defined(CONFIG_IDF_TARGET_ESP32S2)
 #include "soc/rtc_cntl_reg.h"
 #include "esp32s2/rom/rtc.h"
@@ -89,6 +91,10 @@ void common_hal_mcu_on_next_reset(mcu_runmode_t runmode) {
             #endif
             break;
         case RUNMODE_NORMAL:
+            #if defined(CONFIG_IDF_TARGET_ESP32P4)
+            break;
+            #else
+
             // revert back to normal boot
             #if defined(CONFIG_IDF_TARGET_ESP32S2) || defined(CONFIG_IDF_TARGET_ESP32S3)
             REG_WRITE(RTC_RESET_CAUSE_REG, 0);  // reset uf2
@@ -106,11 +112,15 @@ void common_hal_mcu_on_next_reset(mcu_runmode_t runmode) {
             #endif
             #endif
             break;
+            #endif
         case RUNMODE_SAFE_MODE:
             // enter safe mode on next boot
             safe_mode_on_next_reset(SAFE_MODE_PROGRAMMATIC);
             break;
         case RUNMODE_BOOTLOADER:
+            #if defined(CONFIG_IDF_TARGET_ESP32P4)
+            break;
+            #else
             // DFU download
             #if defined(CONFIG_IDF_TARGET_ESP32)
             mp_arg_error_invalid(MP_QSTR_run_mode);
@@ -125,6 +135,7 @@ void common_hal_mcu_on_next_reset(mcu_runmode_t runmode) {
             #endif
             #endif
             break;
+            #endif
         default:
             break;
     }

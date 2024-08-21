@@ -26,8 +26,10 @@
 #define ULP_COPROC_RESERVE_MEM (CONFIG_ESP32S3_ULP_COPROC_RESERVE_MEM)
 #endif
 
+#ifndef CONFIG_IDF_TARGET_ESP32P4
 // To-do idf v5.0: remove following include
 #include "soc/rtc_cntl_reg.h"
+#endif
 
 static bool ulp_used = false;
 static uint32_t pins_used = 0;

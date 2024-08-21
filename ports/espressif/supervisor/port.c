@@ -57,9 +57,20 @@
 #include "soc/lp_aon_reg.h"
 #define CP_SAVED_WORD_REGISTER LP_AON_STORE0_REG
 #else
+
+
+#ifndef CONFIG_IDF_TARGET_ESP32P4
+// To-do idf v5.0: remove following include
 #include "soc/rtc_cntl_reg.h"
 #define CP_SAVED_WORD_REGISTER RTC_CNTL_STORE0_REG
+
+#else
+#include "esp32p4/rom/rtc.h"
+#define CP_SAVED_WORD_REGISTER RTC_SLOW_CLK_CAL_REG
 #endif
+
+#endif
+
 #include "soc/spi_pins.h"
 
 #include "bootloader_flash_config.h"

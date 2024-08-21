@@ -10,7 +10,10 @@
 #include "supervisor/port.h"
 
 #include "esp_private/rtc_ctrl.h"
+
+#ifndef CONFIG_IDF_TARGET_ESP32P4
 #include "soc/rtc_cntl_reg.h"
+#endif
 
 #include "esp_sleep.h"
 
